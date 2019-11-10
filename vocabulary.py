@@ -1,5 +1,7 @@
 import pdb
 
+from tqdm import trange
+
 
 # Basic punctuation declared as global variables.\
 COMMA = ','
@@ -44,12 +46,17 @@ class Vocabulary():
 
 
 def punctuation_split(sentence):
-	sentence.replace('.', ' . ')
-	sentence.replace(',', ' , ')
-	sentence.replace('!', ' ! ')
-	sentence.replace('?', ' ? ')
-	sentence.replace(';', ' ; ')
-	sentence.replace(':', ' : ')
+	"""
+	Adds extra space around each punctuation mark
+	  so that we can run the split function and also
+	  return the punctuation tokens.
+	"""
+	sentence = sentence.replace('.', ' . ')
+	sentence = sentence.replace(',', ' , ')
+	sentence = sentence.replace('!', ' ! ')
+	sentence = sentence.replace('?', ' ? ')
+	sentence = sentence.replace(';', ' ; ')
+	sentence = sentence.replace(':', ' : ')
 
 	return sentence
 
@@ -63,10 +70,10 @@ def make_vocabulary(data, vocab):
 	vocab.new_token(EXCLAMATION)
 	vocab.new_token(HYPHEN)
 
-	for i in range(data.shape[0]):
-		data[i] = punctuation_split(data[i])
-		for word in data[i].split():
-			pdb.set_trace()
+	print('Creating vocabulary...')
+	for i in trange(data.shape[0]):
+		data.iloc[i] = punctuation_split(data.iloc[i].item())
+		for word in data.iloc[i].item().split():
 			vocab.new_token(word)
 
 	return vocab
