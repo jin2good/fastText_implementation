@@ -23,6 +23,7 @@ def main():
 	config = get_args()
 	dataset = Dataset(config)
 
+	# If a premade vocabulary exists, use it.
 	if os.path.isfile('{}vocab.pickle'.format(config.file_prefix)):
 		pickle_in = open('{}vocab.pickle'.format(config.file_prefix), mode='rb')
 		vocabulary = pickle.load(pickle_in)
@@ -34,10 +35,11 @@ def main():
 		pickle.dump(vocabulary, pickle_out)
 		pickle_out.close()
 
-	print('\n\tVocabulary contains a total of {} words.'.format(len(vocabulary.token2idx)))
+	print('\n\tVocabulary contains a total of {} words.\n'.format(len(vocabulary.token2idx)))
 	find_longest(dataset.train, name='train')
 	print()
 	find_longest(dataset.test, name='test')
+	pdb.set_trace()
 
 if __name__ == '__main__':
 	main()

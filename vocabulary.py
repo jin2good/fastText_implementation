@@ -11,6 +11,7 @@ COLON = ':'
 SEMICOLON = ';'
 EXCLAMATION = '!'
 HYPHEN = '-'
+PAD = '<PAD>'
 
 class Vocabulary():
 	"""
@@ -39,10 +40,10 @@ class Vocabulary():
 		return self.token2idx, self.idx2token
 
 	def get_token(self, index):
-		assert self.idx2token[index], 'Invalid index provided.'
+		return self.idx2token[index]
 
 	def get_index(self, token):
-		assert self.token2idx[token], 'Invalid token provided.'
+		return self.token2idx[token]
 
 
 def punctuation_split(sentence):
@@ -62,6 +63,7 @@ def punctuation_split(sentence):
 
 
 def make_vocabulary(data, vocab):
+	vocab.new_token(PAD)
 	vocab.new_token(COMMA)
 	vocab.new_token(PERIOD)
 	vocab.new_token(QUESTION)
@@ -70,8 +72,7 @@ def make_vocabulary(data, vocab):
 	vocab.new_token(EXCLAMATION)
 	vocab.new_token(HYPHEN)
 
-	print('Creating vocabulary...')
-	for i in trange(data.shape[0]):
+	for i in trange(data.shape[0], desc='Creating vocabulary'):
 		data.iloc[i] = punctuation_split(data.iloc[i].item())
 		for word in data.iloc[i].item().split():
 			vocab.new_token(word)
