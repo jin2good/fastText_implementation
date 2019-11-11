@@ -13,7 +13,7 @@ class Dataset():
 		self.load()
 
 	def load(self):
-		if self.config.use_preprocessed:
+		if os.path.isfile(os.path.join(self.config.data_dir, '{}train_preproc.csv'.format(self.config.file_prefix))):
 			print('\tUsing preprocessed data.')
 			self.train = pd.read_csv(os.path.join(self.config.data_dir, '{}train_preproc.csv'.format(self.config.file_prefix)), header=None, engine='python')
 			self.test = pd.read_csv(os.path.join(self.config.data_dir, '{}test_preproc.csv'.format(self.config.file_prefix)), header=None, engine='python')
