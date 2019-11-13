@@ -12,6 +12,7 @@ SEMICOLON = ';'
 EXCLAMATION = '!'
 HYPHEN = '-'
 PAD = '<PAD>'
+UNK = '<UNK>'
 
 class Vocabulary():
 	"""
@@ -46,24 +47,9 @@ class Vocabulary():
 		return self.token2idx[token]
 
 
-def punctuation_split(sentence):
-	"""
-	Adds extra space around each punctuation mark
-	  so that we can run the split function and also
-	  return the punctuation tokens.
-	"""
-	sentence = sentence.replace('.', ' . ')
-	sentence = sentence.replace(',', ' , ')
-	sentence = sentence.replace('!', ' ! ')
-	sentence = sentence.replace('?', ' ? ')
-	sentence = sentence.replace(';', ' ; ')
-	sentence = sentence.replace(':', ' : ')
-
-	return sentence
-
-
 def make_vocabulary(data, vocab):
 	vocab.new_token(PAD)
+	vocab.new_token(UNK)
 	vocab.new_token(COMMA)
 	vocab.new_token(PERIOD)
 	vocab.new_token(QUESTION)
@@ -73,8 +59,7 @@ def make_vocabulary(data, vocab):
 	vocab.new_token(HYPHEN)
 
 	for i in trange(data.shape[0], desc='Creating vocabulary'):
-		data.iloc[i] = punctuation_split(data.iloc[i].item())
-		for word in data.iloc[i].item().split():
+		for word in data[i].split():
 			vocab.new_token(word)
 
 	return vocab
